@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+  crossorigin=""/>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <title>IP Address Tracker</title>
+</head>
+<body>
+  <div class="ip-map">
+    <div class="search-ip">
+      <div class="container">
+        <div class="title">
+          <h1>IP Address Tracker</h1>
+        </div>
+        <div class="form">
+          <form>
+            <input type="text" placeholder="Search for any IP address or domain">
+            <button class="find-location">
+              <img src="./images/icon-arrow.svg" alt="button submit">
+            </button>
+          </form>
+        </div>
+        <div class="location-wrapper location">
+          <div class="location__address">
+            <span class="sub-title">IP Address</span>
+            <div class="ip-number">192.212.174.101</div>
+          </div>
+          <div class="location__location">
+            <span class="sub-title">Location</span>
+            <div class="position-name">Brooklyn, NY<br>10001</div>
+          </div>
+          <div class="location__timezone">
+            <span class="sub-title">Timezone</span>
+            <div class="timezone-time">UTC -05:00</div>
+          </div>
+          <div class="location__isp">
+            <span class="sub-title">ISP</span>
+            <div class="isp-name">
+              SpaceX<br>Starlink
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
+  </div>
+
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+  crossorigin="">
+  </script>
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>
