@@ -1,6 +1,11 @@
 const form = document.querySelector('form'),
-      input = document.querySelector('input');
+      input = document.querySelector('input'),
+      ipNumWrapper = document.querySelector('.ip-number'),
+      locationNameWrapper = document.querySelector('.position-name'),
+      timeZoneWrapper = document.querySelector('.timezone-time'),
+      ispNameWrapper = document.querySelector('.isp-name');
 
+let map;
 let inputValue;
 
 input.addEventListener('input', (event) => {
@@ -8,7 +13,18 @@ input.addEventListener('input', (event) => {
   inputValue = insertDotsInIPAddress(event);
 });
 
-form.addEventListener('submit', async (e) => { // делаем колбэк функцию асинхронной
+// загружаем карту Leaflet при загрузке страницы
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const data = await getDataFromAPI('https://geo.ipify.org/api/v2/country,city?apiKey=at_2XvU36QAO6irpQC2zhVxluElolTq5');
+    let {location} = data;
+    addMap(location.lat, location.lng);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+form.addEventListener('submit', async (e) => { 
     e.preventDefault();
 
     let apiKey = 'at_2XvU36QAO6irpQC2zhVxluElolTq5',
@@ -16,12 +32,23 @@ form.addEventListener('submit', async (e) => { // делаем колбэк фу
 
     let urlApi = `https://geo.ipify.org/api/v2/country,city?apiKey=${apiKey}&ipAddress=${apiAddress}`;
 
-    try { // используем try-catch для обработки ошибок
+    try { 
       const data = await getDataFromAPI(urlApi);
-      let {ip, location} = data;
-    //   console.log(ip);
-    //   console.log(location);
-        addMap(location.lat, location.lng);
+      console.log(data);
+      
+      let {ip, location, isp} = data;
+
+    // Заполняем html динамическими данными из API
+      ipNumWrapper.textContent = ip;
+      locationNameWrapper.textContent = location.city;
+      timeZoneWrapper.textContent = location.timezone;
+      if (isp == ''){
+        ispNameWrapper.textContent = '-';
+      } else {
+        ispNameWrapper.textContent = isp;
+      }
+
+      addMap(location.lat, location.lng);
     } catch (error) {
       console.error(error);
     }
@@ -58,6 +85,10 @@ async function getDataFromAPI(url) {
 
 
 function addMap(lat, lng){
+    if (map) {
+        map.remove();
+    }
+
     let position = {
         center: [lat, lng],
         zoom: 15
@@ -71,4 +102,3 @@ function addMap(lat, lng){
 
     var marker = L.marker(position.center).addTo(map);
 }
-
