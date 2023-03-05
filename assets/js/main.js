@@ -1,8 +1,6 @@
 const form = document.querySelector('form'),
       input = document.querySelector('input');
 
-      
-let map = null; // Объявляем переменную, которая будет использоваться для проверки существования карты на странице 
 let inputValue;
 
 input.addEventListener('input', (event) => {
@@ -23,7 +21,7 @@ form.addEventListener('submit', async (e) => { // делаем колбэк фу
       let {ip, location} = data;
     //   console.log(ip);
     //   console.log(location);
-      addMap(location.lat, location.lng);
+        addMap(location.lat, location.lng);
     } catch (error) {
       console.error(error);
     }
@@ -60,12 +58,6 @@ async function getDataFromAPI(url) {
 
 
 function addMap(lat, lng){
-    // Проверяем, существует ли элемент "map"
-    if (map !== null) {
-        // Если карта уже существует, удаляем ее перед созданием новой
-        map.remove();
-    }
-    // Инициализация новой карты
     let position = {
         center: [lat, lng],
         zoom: 15
