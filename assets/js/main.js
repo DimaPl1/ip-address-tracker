@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 form.addEventListener('submit', async (e) => { 
     e.preventDefault();
 
+    if (!inputValue) {
+      return inputValue = '';
+    }
+
     let apiKey = 'at_2XvU36QAO6irpQC2zhVxluElolTq5',
         apiAddress = inputValue;
 
@@ -34,8 +38,6 @@ form.addEventListener('submit', async (e) => {
 
     try { 
       const data = await getDataFromAPI(urlApi);
-      console.log(data);
-      
       let {ip, location, isp} = data;
 
     // Заполняем html динамическими данными из API
@@ -89,9 +91,12 @@ function addMap(lat, lng){
         map.remove();
     }
 
+    // Задаем зум для карты при изменении ширины экрана браузера
+    let zoom = window.innerWidth <= 768 ? 17 : 15;
+
     let position = {
         center: [lat, lng],
-        zoom: 15
+        zoom: zoom
     }
     map = L.map('map', position); // Присваиваем переменной map созданную карту
 
@@ -100,5 +105,17 @@ function addMap(lat, lng){
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+        // создание экземпляра класса L.Icon с черным цветом
+    let blackIcon = new L.Icon({
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [40, 51],
+        iconAnchor: [12, 41],
+        shadowSize: [0, 0],
+        shadowAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+
     var marker = L.marker(position.center).addTo(map);
+    marker.setIcon(blackIcon);
 }
